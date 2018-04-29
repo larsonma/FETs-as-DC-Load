@@ -1,7 +1,7 @@
 /*
  * main.c
  *
- *  Created on: Jan 11, 2017
+ *  Created on: April 29, 2018
  *      Author: Mitchell Larson
  */
 #include <stdio.h>
@@ -30,11 +30,10 @@ static void print_help();
 
 /**
  * The main method of the file contains the control flow structure for a program
- * that monitors the current temperature of the external world. Based on 3
- * different state variables, which are manipulated by the user, the system's
- * lcd can display the current temperature, the temperature extremes, a
- * troubleshooting mode, as well as a help screen. Program runs until
- * power is no longer available.
+ * that monitors the current temperature of the external world. On startup initial
+ * temperature is recorded, and if the room temperature ever exceeds +5 degrees,
+ * the output pins are set to logic-1, triggering external alarms connected to them.
+ * The alarm stops when temperature reaches original turn-on temperature.
  * Inputs:
  * 		none
  * Outputs:
@@ -71,10 +70,10 @@ int main(void){
 					*(GPIOA_ODR)  |= (0x380);
 					alarmActive = true;
 				}else if(alarmActive && current_temp <= power_on_temp){
+					//Turn MOSFETs off
 					*(GPIOA_ODR)  &= ~(0x380);
 					alarmActive = false;
 				}
-				//mV = get_mili_volts();
 				state = DISPLAY;
 				break;
 			case DISPLAY:
@@ -98,7 +97,7 @@ int main(void){
 
 /**
  * This function will initialize the Analog to digital converter, the keypad,
- * as well as the LCD by calling their respective initialization functions.
+ * the LCD, and the output pins driving the MOSFET gate terminals.
  * Inputs:
  * 		none
  * Outputs:
@@ -120,10 +119,10 @@ static void initalize(){
 
 /**
  * This function will read any input from the key pad, if any, and change one of
- *  the state variables based on the user input.
+ *  the state variable based on the user input.
  * Inputs:
  * 		*mode - pointer to the state variable mode
- * 		*tempMode - pointer to the state variable tempMode
+ * 		*offset - pointer to the temperature offset
  * Outputs:
  * 		none, but the state variables may change upon running this function
  */
@@ -144,12 +143,14 @@ static void read_input(Mode1 *mode, int *offset){
 }
 
 /**
- * This helper function prints the current temperature to the LCD. If the
- * program is in fahrenheit temperature mode, then the temperature will be
- * converted an then displayed.
+ * This helper function prints the current temperature to the LCD, along with
+ * the power-on temperature. The temperature offset and help option are displayed
+ * as well to provide additional information to the user.
  * Inputs:
  * 		current_temp - temperature to display
  * 		tempMode - the temperature mode the program is in
+ * Outputs:
+ * 		none
  */
 static void print_current_temp(float current_temp, float power_on_temp, int offset){
 	lcd_reset();
@@ -172,6 +173,13 @@ static void print_current_temp(float current_temp, float power_on_temp, int offs
 	lcd_print_string(buffer3);
 }
 
+/**
+ * This helper function prints the help menu to the user.
+ * Inputs:
+ * 		none
+ * Outputs:
+ * 		noen
+ */
 static void print_help(){
 	lcd_reset();
 	lcd_print_string(offset_up_msg);
