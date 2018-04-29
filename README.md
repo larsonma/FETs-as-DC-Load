@@ -1,7 +1,3 @@
----
-title: CE 3101 Lab Experiment 7
----
-
 Abstract
 ========
 
@@ -110,7 +106,7 @@ designing that portion of the circuit. The LED however, did not have
 self-regulating circuitry, so a current limiting resistor was needed to
 prevent the LED from burning out due to excessive current. Utilizing
 Kirchoff's voltage law, a V~DD~ of 5V, a LED voltage drop of 2.75V, and
-a current of 10 mA, the current limiting resistor was determined to be
+a current of 10 mA, the current limiting resistor was determined to be 225Ω
 
 Rounding up to the next closest available resistor meant that a 330Ω
 resistor would be used in the design. This would result in a slightly
@@ -123,16 +119,15 @@ potentiometer was used rather than a fixed resistor. Again, since the
 fan was self-regulating, no current limiting resistor was needed. This
 resulted in the following circuit.
 
-![](media/image2.png){width="6.5in" height="3.1645833333333333in"}
-
+![Circuit Design](./docs/Circuit%20Design.jpg)
 Credit - Dr. Meier, Milwaukee School of Engineering
 
 Where the 2n7000 gate pins were hooked up to PA7, PA8, and PA9 of the
 microcontroller, respectively.
 
 The following image show the completion of the circuit implemented on a
-breadboard.![](media/image3.jpeg){width="6.5in"
-height="3.698611111111111in"}
+breadboard.
+![Circuit](./docs/Circuit.jpg)
 
 Demo
 ----
