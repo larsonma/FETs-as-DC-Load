@@ -1,0 +1,10 @@
+/Binaries
+/Includes
+/Debug
+
+*cfg
+*ld
+*xml
+
+.cproject
+.project
