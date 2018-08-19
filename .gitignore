@@ -1,10 +1,17 @@
-/Binaries
-/Includes
-/Debug
+Debug/
+.settings/
 
-*cfg
-*ld
-*xml
+*.cfg
+*.ld
+*.xml
 
 .cproject
 .project
+
+*.docx
+*.out
+*.out.*
+*.dat
+*.prb
+*.dwf3work
+
